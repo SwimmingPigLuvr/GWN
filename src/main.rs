@@ -1,7 +1,5 @@
-use core::num;
 use std::io::{self, Read};
 use std::time::Instant;
-use std::cmp::Ordering;
 use rand::Rng;
 
 fn generate_math_problem() -> (String, i32) {
@@ -12,8 +10,8 @@ fn generate_math_problem() -> (String, i32) {
 
     match operation {
         1 => (format!("{} + {}", num1, num2), num1 + num2),
-        1 => (format!("{} - {}", num1, num2), num1 - num2),
-        1 => (format!("{} * {}", num1, num2), num1 * num2),
+        2 => (format!("{} - {}", num1, num2), num1 - num2),
+        3 => (format!("{} * {}", num1, num2), num1 * num2),
         4 => {
             if num2 == 0 {
                 generate_math_problem()
@@ -43,7 +41,7 @@ fn main() {
         let mut user_input = String::new();
         io::stdin().read_line(&mut user_input).expect("falied to read input");
 
-        let user_input = match user_input.trim().parse() {
+        let user_input: i32 = match user_input.trim().parse() {
             Ok(num) => num,
             Err(_) => continue,
         };
