@@ -1,10 +1,11 @@
+use core::num;
 use std::io;
 use std::time::{Instant, Duration};
 use rand::Rng;
 
 // todo
-// only non negatie subtraction answers
-// so lets sort everything a > b
+// solutions per/minute
+// accuracy in percentage
 
 fn generate_math_problem() -> (String, i32) {
     let mut rng = rand::thread_rng();
@@ -36,10 +37,22 @@ fn main() {
     let mut correct = 0;
     let mut total = 0;
 
-    let game_duration = Duration::from_secs(60);
+    println!("choose test length: 60s 30s 10s");
+    let mut duration_input = String::new();
+    io::stdin().read_line(&mut duration_input).expect("failed to read input");
+
+    let game_duration_secs: u64 = match duration_input.trim().parse(){
+        Ok(num) => num,
+        Err(_) => {
+            println!("please enter a positive number");
+            return;
+        }
+    };
+    let game_duration = Duration::from_secs(game_duration_secs);
+
     let start_time = Instant::now();
 
-    println!("You have 60 seconds to solve as many math problems as you can!");
+    println!("You have {} seconds to solve as many math problems as you can!", game_duration_secs);
 
     while start_time.elapsed() < game_duration {
         let (problem, answer) = generate_math_problem();
@@ -67,12 +80,16 @@ fn main() {
 
         let time_left = game_duration.checked_sub(start_time.elapsed()).unwrap_or_else(|| Duration::new(0, 0));
         println!("Time left: {} seconds", time_left.as_secs());
+
+
     }
 
     println!(
         "Time's up! You answered {}/{} questions correctly.",
         correct, total
     );
+    let solutions_per_minute = (correct as f64 * 60.0) / game_duration.as_secs() as f64;
+    println!("spm: {:.2}", solutions_per_minute);
 }
 
 
