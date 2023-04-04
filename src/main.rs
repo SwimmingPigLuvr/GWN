@@ -16,13 +16,13 @@ fn generate_math_problem() -> (String, i32) {
 
     match operation {
         1 => {
-            if num1 > num2 {
+            if num1 < num2 {
                 std::mem::swap(&mut num1, &mut num2);
             }
             (format!("{} + {}", num1, num2), num1 + num2)
         },
         2 => {
-            if num1 > num2 {
+            if num1 < num2 {
                 std::mem::swap(&mut num1, &mut num2);
             }
             (format!("{} - {}", num1, num2), num1 - num2)
