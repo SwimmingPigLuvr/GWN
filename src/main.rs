@@ -2,14 +2,19 @@ use owo_colors::OwoColorize;
 use rand::{thread_rng, Rng};
 use std::io::{self, Write};
 use std::time::Instant;
+use prettytable::{Table, Row, Cell};
 
 //todo
 // separate sections with comment titles
 
 fn main() {
+    let base: u32 = 19;
+    let limit: u32 = 20;
+    print_table(base, limit);
     println!("Select game mode:");
     println!("1. Random");
     println!("2. Practice");
+    println!("3. Print Table");
     // take input
     let mut mode_input = String::new();
     io::stdin()
@@ -150,6 +155,28 @@ fn main() {
     );
     println!("Solutions per minute: {:.2}", solutions_per_minute);
 }
+
+fn print_table(base: u32, limit: u32) {
+    let mut table = Table::new();
+    // Add a header row
+    table.add_row(Row::new(vec![
+        Cell::new("Multiplier"),
+        Cell::new("Product"),
+    ]));
+
+    // Add data rows
+    for i in 1..=limit {
+        table.add_row(Row::new(vec![
+            Cell::new(&format!("{} x {}", base, i)),
+            Cell::new(&(base * i).to_string()),
+        ]));
+    }
+
+    // Print the table
+    table.printstd();
+}
+
+
 
 fn generate_math_problem(
     operation: u32,
