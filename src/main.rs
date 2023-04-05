@@ -1,17 +1,21 @@
+use owo_colors::OwoColorize;
 use rand::{thread_rng, Rng};
 use std::io::{self, Write};
 use std::time::Instant;
+
+//todo
+// separate sections with comment titles
 
 fn main() {
     println!("Select game mode:");
     println!("1. Random");
     println!("2. Practice");
-
+    // take input
     let mut mode_input = String::new();
     io::stdin()
         .read_line(&mut mode_input)
         .expect("Failed to read input");
-
+    // set game mode
     let game_mode: u32 = match mode_input.trim().parse() {
         Ok(num) => num,
         Err(_) => {
@@ -19,7 +23,7 @@ fn main() {
             return;
         }
     };
-
+    // set operator
     let (operation, user_number, ascending_order) = if game_mode == 2 {
         println!("Select operation:");
         println!("1. Addition");
@@ -46,7 +50,7 @@ fn main() {
                 return;
             }
         };
-
+        // set number
         println!("Enter the number you want to work on (0 for random):");
         let mut number_input = String::new();
         io::stdin()
@@ -60,7 +64,7 @@ fn main() {
                 return;
             }
         };
-
+        // practice in order?
         println!("Do you want to go through problems in ascending order? (yes/no)");
         let mut order_input = String::new();
         io::stdin()
@@ -81,9 +85,20 @@ fn main() {
         (0, 0, false)
     };
 
+    println!("{}", ("set duration: 60s 30s 10s").bright_cyan());
+    let mut duration_input = String::new();
+    io::stdin().read_line(&mut duration_input).expect("incorrect fmt");
+    let user_duration: u32 = match duration_input.trim().parse() {
+        Ok(num) => num,
+        Err(_) => {
+            println!("{}", ("please enter a number").red());
+            return;
+        }
+    };
+
     println!("Get ready to start!");
     let start_time = Instant::now();
-    let game_duration = std::time::Duration::from_secs(60);
+    let game_duration = std::time::Duration::from_secs(user_duration as u64);
     let mut correct_answers = 0;
     let mut total_questions = 0;
     let mut current_problem_count = 0;
